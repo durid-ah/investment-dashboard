@@ -3,6 +3,8 @@
 
 use anyhow::Result;
 
+mod db;
+
 fn main() -> Result<()> {
   tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![
