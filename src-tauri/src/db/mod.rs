@@ -1,4 +1,4 @@
 
 mod utils;
-mod account_actions;
-mod investment_actions;
+pub mod account_actions;
+pub mod investment_actions;
