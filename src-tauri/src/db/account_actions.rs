@@ -1,13 +1,11 @@
 use crate::db::utils::create_connection;
+use crate::db::utils::List;
 
 #[derive(Clone, serde::Serialize)]
 pub struct Account {
     id: i64,
     account: String,
 }
-
-#[derive(Clone, serde::Serialize)]
-pub struct List<T>(Vec<T>);
 
 #[tauri::command]
 pub fn add_account(account_name: &str) {

@@ -88,7 +88,7 @@ export default function Page() {
     if (accountName.length === 0) return
 
     await addAccount(accountName)
-    getAccounts()
+    await getAccounts()
       .then((res: Account[]) => {
         res.forEach(ac => ac.isSelected = false)
         setAccounts(res)
