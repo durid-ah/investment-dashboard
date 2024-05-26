@@ -53,7 +53,19 @@ pub fn get_investments_by_account(account_id: i64) -> Result<List<Investment>, S
         )
         .map_err(|err| err.to_string())?;
 
-    let _ = stmt.query_map((account_id,), |row| Ok(())).unwrap();
+    let rows = stmt
+        .query_map((account_id,), |row| {
+            Ok(Investment {
+                id: row.get(0)?,
+                account_id: row.get(1)?,
+                ticker: row.get(2)?,
+                shares: row.get(3)?,
+                value: row.get(4)?,
+            })
+        })
+        .unwrap()
+        .map(|row| row.unwrap())
+        .collect();
 
-    Ok(List(vec![]))
+    Ok(List(rows))
 }
