@@ -1,30 +1,40 @@
 'use client'
 
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Account, addAccount, deleteAccount, getAccounts } from './account_calls';
+import Link from 'next/link';
 
 
 type AddAccountRowProp = {
   cancelAddRow: () => void
-  addNewAccount: (name: string) => void 
+  addNewAccount: (name: string) => Promise<void> 
 }
 
 function AddAccountRow({cancelAddRow, addNewAccount}: AddAccountRowProp) {
   const [accountName, setAccountName] = useState('')
+  async function addFunction() {
+    await addNewAccount(accountName);
+    setAccountName('');
+  }
+
+  function accountChangeEvent(e : ChangeEvent<HTMLInputElement>) {
+    setAccountName(e.target.value)
+  }
 
   return (
     <tr>
       <th></th>
       <td>
         <input type="text"
-          onChange={(e) => setAccountName(e.target.value)} 
+          onChange={(e) => accountChangeEvent(e)} 
           placeholder="account name" 
+          value={accountName}
           className="input input-bordered input-xs w-full max-w-xs" />
       </td>
       <th className="flex flex-row justify-center gap-2">
         <button 
             className="btn btn-outline btn-success btn-xs" 
-            onClick={() => addNewAccount(accountName)}> add </button>
+            onClick={addFunction}> add </button>
         <button className="btn btn-outline btn-xs" onClick={cancelAddRow}>cancel</button>
       </th>
     </tr>
@@ -53,7 +63,7 @@ function AccountRow({account, toggleSelect} : AccountProp) {
         </div>
       </td>
       <th className="flex flex-row justify-center">
-        <button className="btn btn-ghost btn-xs">details</button>
+        <Link href={`/investments?accountId=${account.id}`} className="btn btn-ghost btn-xs">details</Link>
       </th>
     </tr>
   )
