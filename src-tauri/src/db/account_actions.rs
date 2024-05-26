@@ -11,7 +11,7 @@ pub struct Account {
 pub fn add_account(account_name: &str) {
     let conn = create_connection();
     conn.execute(
-        "INSERT INTO accounts (account) VALUES (?1);",
+        "INSERT INTO account (account) VALUES (?1);",
         (account_name,),
     )
     .expect("create account: failed prepare statement");
@@ -20,7 +20,7 @@ pub fn add_account(account_name: &str) {
 #[tauri::command]
 pub fn get_accounts() -> List<Account> {
     let conn = create_connection();
-    let mut stmt = conn.prepare("SELECT id, account FROM accounts").unwrap();
+    let mut stmt = conn.prepare("SELECT id, account FROM account").unwrap();
 
     let rows = stmt
         .query_map([], |row| {
@@ -40,6 +40,6 @@ pub fn get_accounts() -> List<Account> {
 pub fn delete_account(id: usize) {
     let conn = create_connection();
 
-    conn.execute("DELETE FROM accounts WHERE id = ?1", (id,))
+    conn.execute("DELETE FROM account WHERE id = ?1", (id,))
         .expect("Prepare statement failed");
 }
