@@ -3,8 +3,8 @@ use crate::db::utils::List;
 
 #[derive(Clone, serde::Deserialize, serde::Serialize)]
 pub struct Investment {
-    id: i64,
-    account_id: i64,
+    id: u64,
+    account_id: u64,
     ticker: String,
     shares: f64,
     value: f64,

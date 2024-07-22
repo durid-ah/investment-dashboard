@@ -34,7 +34,7 @@ fn create_investments_table() -> Result<()> {
             ticker TEXT NOT NULL,
             shares REAL NOT NULL,
             value REAL NOT NULL,
-            FOREIGN KEY (account_id) REFERENCES accounts(id),
+            FOREIGN KEY (account_id) REFERENCES account(id),
             FOREIGN KEY (ticker) REFERENCES ticker(ticker)
         );
     ",
