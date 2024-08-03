@@ -3,6 +3,7 @@
 import { useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react";
 import { Investment, addInvestment, getInvestmentsByAccount } from "./investment_calls";
+import TickerDropdown from "../components/ticker-dropdown";
 
 type AddInvestmentRowProp = {
   accountId: number
@@ -21,12 +22,7 @@ function AddInvestmentRow({ accountId, addNewInvestment, cancelAddRow }: AddInve
     <tr>
       <th></th>
       <td>
-        <input type="text" 
-          placeholder="ticker"
-          value={investment.ticker}
-          onChange={(e) => setInvestment(inv => ({...inv, ticker: e.target.value}))}
-          minLength={3} maxLength={15} size={15} spellCheck={false}
-          className="input input-bordered input-xs w-full max-w-xs"/>
+        <TickerDropdown onChange={(ticker) => setInvestment(inv => ({...inv, ticker}))} />
       </td>
       <td>
         <input type="number" 
@@ -50,23 +46,60 @@ function AddInvestmentRow({ accountId, addNewInvestment, cancelAddRow }: AddInve
   )  
 }
 
+type InvestmentProp = {
+  investment: Investment
+}
+
+function InvestmentRow({investment}: InvestmentProp) {
+  return (
+    <tr>
+      <th>
+        <label>
+          <input type="checkbox" 
+            className="checkbox" />
+            {/* checked={investment.isSelected} */}
+            {/* onChange={() => toggleSelect(account.id)}/> */}
+        </label>
+      </th>
+      <td>
+        <div className="flex items-center gap-3">
+          <div className="font-bold">{investment.ticker}</div>
+        </div>
+      </td>
+      <td>
+        <div className="flex items-center gap-3">
+          <div>{investment.shares}</div>
+        </div>
+      </td>
+      <td>
+        <div className="flex items-center gap-3">
+          <div>{investment.value}</div>
+        </div>
+      </td>
+    </tr>
+  )  
+}
+
 
 export default function Page() {
   const [showAdd, setShowAdd] = useState<boolean>(false);
   const searchParams = useSearchParams();
   const accountId = Number(searchParams.get('accountId'))
+  const [investments, setInvestments] = useState<Investment[]>([])
+
 
   useEffect(() => {
-    getInvestmentsByAccount(accountId).then(res => console.log(res)); 
+    getInvestmentsByAccount(accountId).then(res => setInvestments(res)); 
   }, [accountId])
 
   async function addNewInvestment(investment: Investment) {
+    console.log(investment)
     await addInvestment(investment);
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="overflow-x-auto">
+    <main className="flex h-full flex-col items-center justify-between p-24">
+      <div className="overflow-x-auto h-full">
         <table className="table table-md">
           <thead>
             <tr>
@@ -87,10 +120,9 @@ export default function Page() {
             { showAdd &&
               <AddInvestmentRow accountId={accountId} addNewInvestment={addNewInvestment} cancelAddRow={() => null}/>
             }
-            {/* { accounts.map(ac => (
-                <AccountRow key={`${ac.id}`} account={ac} toggleSelect={toggleSelectAccount} />
-              ))
-            */}
+            {
+              investments.map(investment => (<InvestmentRow key={investment.id} investment={investment} />))
+            }
           </tbody>
         </table>
       </div>
