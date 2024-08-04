@@ -12,10 +12,26 @@ type AddInvestmentRowProp = {
 }
 
 function AddInvestmentRow({ accountId, addNewInvestment, cancelAddRow }: AddInvestmentRowProp) {
-  const [investment, setInvestment] = useState<Investment>({id: 0, account_id: accountId, ticker: '', shares: 0, value: 0});
+  const [investment, setInvestment] = useState<Investment>(
+    {
+      id: 0, 
+      account_id: accountId, 
+      ticker: '', 
+      shares: 0, 
+      value: 0, 
+      isSelected: false
+    });
+
   async function addFunction() {
     await addNewInvestment(investment!)
-    setInvestment({id: 0, account_id: accountId, ticker: '', shares: 0, value: 0});
+    setInvestment({
+      id: 0, 
+      account_id: accountId, 
+      ticker: '', 
+      shares: 0, 
+      value: 0, 
+      isSelected: false
+    });
   }
 
   return (
@@ -47,18 +63,19 @@ function AddInvestmentRow({ accountId, addNewInvestment, cancelAddRow }: AddInve
 }
 
 type InvestmentProp = {
-  investment: Investment
+  investment: Investment,
+  toggleSelect: (toggleIdx: number) => void
 }
 
-function InvestmentRow({investment}: InvestmentProp) {
+function InvestmentRow({investment, toggleSelect}: InvestmentProp) {
   return (
     <tr>
       <th>
         <label>
           <input type="checkbox" 
-            className="checkbox" />
-            {/* checked={investment.isSelected} */}
-            {/* onChange={() => toggleSelect(account.id)}/> */}
+            className="checkbox"
+            checked={investment.isSelected}
+            onChange={() => toggleSelect(investment.id)}/>
         </label>
       </th>
       <td>
@@ -80,21 +97,38 @@ function InvestmentRow({investment}: InvestmentProp) {
   )  
 }
 
-
 export default function Page() {
   const [showAdd, setShowAdd] = useState<boolean>(false);
   const searchParams = useSearchParams();
   const accountId = Number(searchParams.get('accountId'))
   const [investments, setInvestments] = useState<Investment[]>([])
 
-
   useEffect(() => {
-    getInvestmentsByAccount(accountId).then(res => setInvestments(res)); 
+    getInvestmentsByAccount(accountId)
+      .then(res => {
+        res.forEach(inv => inv.isSelected = false)
+        setInvestments(res) 
+      }) 
   }, [accountId])
 
   async function addNewInvestment(investment: Investment) {
-    console.log(investment)
     await addInvestment(investment);
+    getInvestmentsByAccount(accountId)
+      .then(res => {
+        res.forEach(inv => inv.isSelected = false)
+        setInvestments(res) 
+      }) 
+  }
+
+  function toggleSelectInvestment(investmentId: number) {
+    const newInvestments = investments.map(inv => {
+      if (inv.id === investmentId)
+        inv.isSelected = !inv.isSelected
+
+      return inv
+    })
+    
+    setInvestments(newInvestments)
   }
 
   return (
@@ -105,6 +139,7 @@ export default function Page() {
             <tr>
               <th>
                 <label>
+                  {/* TODO: Add Select All */}
                 </label>
               </th>
               <th>Ticker</th>
@@ -121,7 +156,12 @@ export default function Page() {
               <AddInvestmentRow accountId={accountId} addNewInvestment={addNewInvestment} cancelAddRow={() => null}/>
             }
             {
-              investments.map(investment => (<InvestmentRow key={investment.id} investment={investment} />))
+              investments
+                .map(investment => 
+                  (<InvestmentRow 
+                    key={investment.id} 
+                    investment={investment} 
+                    toggleSelect={toggleSelectInvestment}/>))
             }
           </tbody>
         </table>

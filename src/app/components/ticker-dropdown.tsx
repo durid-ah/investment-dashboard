@@ -1,7 +1,6 @@
 import { invoke } from "@tauri-apps/api"
 import { useEffect, useState } from "react";
 
-
 type Ticker = {
   ticker: string
 }
@@ -17,7 +16,6 @@ async function getTickers() {
 async function addTicker(ticker: string) {
   return await invoke('add_ticker', { ticker: ticker })
 }
-
 
 export default function TickerDropdown({ onChange }: TickerDropDownProps) {
   const [tickers, setTickers] = useState<Ticker[]>([])
@@ -42,13 +40,14 @@ export default function TickerDropdown({ onChange }: TickerDropDownProps) {
   }
 
   function handleFilterChange(ticker: string) {
+    const _ticker = ticker.toUpperCase()
     setFilteredTickers(filterTickers(tickers, ticker))
-    setSelectedTicker(ticker)
-    onChange(ticker)
+    setSelectedTicker(_ticker)
+    onChange(_ticker)
   }
 
   async function addNewTicker(ticker:string) {
-    await addTicker(ticker)
+    await addTicker(ticker.toUpperCase())
     const _tickers = await getTickers()
     setTickers(_tickers)
     setFilteredTickers(filterTickers(_tickers, selectedTicker))

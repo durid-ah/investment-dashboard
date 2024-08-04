@@ -6,7 +6,8 @@ export type Investment = {
     account_id: number,
     ticker: string,
     shares: number,
-    value: number
+    value: number,
+    isSelected: boolean
 }
 
 export async function getInvestmentsByAccount(accountId: number) {

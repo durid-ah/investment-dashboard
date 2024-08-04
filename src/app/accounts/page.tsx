@@ -121,6 +121,7 @@ export default function Page() {
             <tr>
               <th>
                 <label>
+                {/* TODO: Add Select All */}
                 </label>
               </th>
               <th>Account Name</th>
@@ -131,14 +132,15 @@ export default function Page() {
             </tr>
           </thead>
           <tbody>
-            { accounts.map(ac => (
+            { 
+              accounts.map(ac => (
                 <AccountRow key={`${ac.id}`} account={ac} toggleSelect={toggleSelectAccount} />
               ))
             }    
             { showAdd && 
               <AddAccountRow 
-                  cancelAddRow={turnOffAddAccount} 
-                  addNewAccount={addNewAccount}/>
+                cancelAddRow={turnOffAddAccount} 
+                addNewAccount={addNewAccount}/>
             }
           </tbody>
         </table>
