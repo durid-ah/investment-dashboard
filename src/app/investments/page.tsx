@@ -145,8 +145,8 @@ export default function Page() {
               <th>Ticker</th>
               <th>Shares</th>
               <th>Value</th>
-              <th className="flex flex-row gap-2">
-                <button className="btn btn-outline btn-primary btn-xs" onClick={() => setShowAdd(val => !val)}>add investmet</button>
+              <th className="flex flex-col gap-2">
+                <button className="btn btn-outline btn-primary btn-xs" onClick={() => setShowAdd(val => !val)}>add</button>
                 <button className="btn btn-outline btn-error btn-xs">delete selected</button>
               </th>
             </tr>

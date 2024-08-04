@@ -66,14 +66,16 @@ export default function TickerDropdown({ onChange }: TickerDropDownProps) {
           <li className="btn btn-neutral btn-xs rounded-none"
             onClick={() => addNewTicker(selectedTicker)}>
             Add Ticker
-          </li>}
+          </li>
+        }
         { filteredTickers.map(t => (
           <li className="btn btn-neutral btn-xs rounded-none"
             key={t.ticker}
             onClick={() => handleFilterChange(t.ticker)}>
               {t.ticker}
           </li>
-          )) }
+          )) 
+        }
       </ul>
     </div>
   )

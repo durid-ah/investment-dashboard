@@ -8,6 +8,7 @@ pub struct Investment {
     ticker: String,
     shares: f64,
     value: f64,
+    category: String
 }
 
 #[tauri::command]
@@ -48,7 +49,7 @@ pub fn get_investments_by_account(account_id: i64) -> Result<List<Investment>, S
     let conn = create_connection();
     let mut stmt = conn
         .prepare(
-            "SELECT id, account_id, ticker, shares, value FROM investment
+            "SELECT id, account_id, ticker, shares, value, category FROM investment
          WHERE account_id = ?1",
         )
         .map_err(|err| err.to_string())?;
@@ -61,6 +62,7 @@ pub fn get_investments_by_account(account_id: i64) -> Result<List<Investment>, S
                 ticker: row.get(2)?,
                 shares: row.get(3)?,
                 value: row.get(4)?,
+                category: row.get(5)?
             })
         })
         .unwrap()
