@@ -7,7 +7,7 @@ pub fn initialize() -> Result<()> {
     create_ticker_table()?;
     create_investment_category_table()?;
     create_investment_table()?;
-    
+
     Ok(())
 }
 
@@ -47,7 +47,9 @@ fn create_investment_category_table() -> Result<()> {
         CREATE TABLE IF NOT EXISTS investment_category (
             category TEXT PRIMARY KEY
         );
-        ", ())?;
+        ",
+        (),
+    )?;
 
     Ok(())
 }
@@ -73,4 +75,3 @@ fn create_investment_table() -> Result<()> {
 
     Ok(())
 }
-
