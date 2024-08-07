@@ -7,6 +7,7 @@ export type Investment = {
     ticker: string,
     shares: number,
     value: number,
+    category: string,
     isSelected: boolean
 }
 

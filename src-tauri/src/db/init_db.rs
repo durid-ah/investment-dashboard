@@ -3,7 +3,6 @@ use anyhow::Result;
 use super::utils::create_connection;
 
 pub fn initialize() -> Result<()> {
-    create_accounts_table()?;
     create_ticker_table()?;
     create_investment_category_table()?;
     create_investment_table()?;
@@ -11,20 +10,7 @@ pub fn initialize() -> Result<()> {
     Ok(())
 }
 
-fn create_accounts_table() -> Result<()> {
-    let conn = create_connection();
-    conn.execute(
-        "
-        CREATE TABLE IF NOT EXISTS account (
-            id integer primary key,
-            account text not null
-        )
-    ",
-        (),
-    )?;
 
-    Ok(())
-}
 
 fn create_ticker_table() -> Result<()> {
     let conn = create_connection();
