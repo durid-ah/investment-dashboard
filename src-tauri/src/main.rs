@@ -4,6 +4,7 @@
 use anyhow::Result;
 
 mod db;
+pub mod schema;
 
 fn main() -> Result<()> {
     db::init_db::initialize()?;

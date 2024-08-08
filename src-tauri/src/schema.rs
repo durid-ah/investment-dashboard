@@ -2,14 +2,14 @@
 
 diesel::table! {
     account (id) {
-        id -> Nullable<Integer>,
+        id -> Integer,
         account -> Text,
     }
 }
 
 diesel::table! {
     investment (id) {
-        id -> Nullable<Integer>,
+        id -> Integer,
         account_id -> Integer,
         ticker -> Text,
         shares -> Float,
@@ -20,13 +20,13 @@ diesel::table! {
 
 diesel::table! {
     investment_category (category) {
-        category -> Nullable<Text>,
+        category -> Text,
     }
 }
 
 diesel::table! {
     ticker (ticker) {
-        ticker -> Nullable<Text>,
+        ticker -> Text,
     }
 }
 

@@ -1,5 +1,5 @@
 CREATE TABLE investment (
-  id INTEGER PRIMARY KEY,
+  id INTEGER PRIMARY KEY NOT NULL,
   account_id INTEGER NOT NULL,
   ticker TEXT NOT NULL,
   shares REAL NOT NULL,
