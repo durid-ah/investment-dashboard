@@ -7,7 +7,7 @@ mod db;
 pub mod schema;
 
 fn main() -> Result<()> {
-    db::init_db::initialize()?;
+    dotenvy::dotenv().expect("unable to retrieve environment variables");
 
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![

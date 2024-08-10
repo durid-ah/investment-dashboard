@@ -29,10 +29,29 @@ pub fn establish_connection() -> SqliteConnection {
 
 #[cfg(test)]
 mod tests {
+    use diesel::RunQueryDsl;
 
-  #[test]
-  fn test_foreign_key() {
-    
-  }
+    use crate::db::{models::NewInvestment, utils::establish_connection};
 
+    #[test]
+    fn test_foreign_key() {
+        use crate::schema::investment;
+
+        dotenvy::dotenv().unwrap();
+
+        let connection = &mut establish_connection();
+        let investment = NewInvestment {
+            account_id: 0,
+            ticker: "test".to_owned(),
+            shares: 1.0,
+            value: 1.0,
+            category: None,
+        };
+
+        let val = diesel::insert_into(investment::table)
+            .values(&investment)
+            .execute(connection);
+
+        assert!(val.is_err())
+    }
 }

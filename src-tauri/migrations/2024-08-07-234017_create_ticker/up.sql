@@ -1,3 +1,3 @@
 CREATE TABLE ticker (
-    ticker TEXT PRIMARY KEY NOT NULL
+    ticker_name TEXT PRIMARY KEY NOT NULL
 );

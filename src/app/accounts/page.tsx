@@ -59,7 +59,7 @@ function AccountRow({account, toggleSelect} : AccountProp) {
       </th>
       <td>
         <div className="flex items-center gap-3">
-          <div className="font-bold">{account.account}</div>
+          <div className="font-bold">{account.account_name}</div>
         </div>
       </td>
       <th className="flex flex-row justify-center">

@@ -3,7 +3,7 @@
 diesel::table! {
     account (id) {
         id -> Integer,
-        account -> Text,
+        account_name -> Text,
     }
 }
 
@@ -25,18 +25,12 @@ diesel::table! {
 }
 
 diesel::table! {
-    ticker (ticker) {
-        ticker -> Text,
+    ticker (ticker_name) {
+        ticker_name -> Text,
     }
 }
 
 diesel::joinable!(investment -> account (account_id));
 diesel::joinable!(investment -> investment_category (category));
-diesel::joinable!(investment -> ticker (ticker));
 
-diesel::allow_tables_to_appear_in_same_query!(
-    account,
-    investment,
-    investment_category,
-    ticker,
-);
+diesel::allow_tables_to_appear_in_same_query!(account, investment, investment_category, ticker,);
