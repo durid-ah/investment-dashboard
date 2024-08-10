@@ -12,9 +12,9 @@ export type Investment = {
 }
 
 export async function getInvestmentsByAccount(accountId: number) {
-    return await invoke<Investment[]>('get_investments_by_account', {accountId: accountId});
+    return await invoke<Investment[]>('get_investments_by_account', {filterAccountId: accountId});
 }
 
 export async function addInvestment(investment: Investment) {
-    return await invoke('add_investment', {investment: investment})
+    return await invoke('add_investment', {newInvestment: investment})
 }
