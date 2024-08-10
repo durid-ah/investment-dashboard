@@ -2,7 +2,7 @@ import { invoke } from "@tauri-apps/api"
 import { useEffect, useState } from "react";
 
 type Ticker = {
-  ticker: string
+  ticker_name: string
 }
 
 type TickerDropDownProps = {
@@ -33,7 +33,7 @@ export default function TickerDropdown({ onChange }: TickerDropDownProps) {
   function filterTickers(tickers: Ticker[], targetTicker: string) {
     if (targetTicker) {
       const lowerTargetTicker = targetTicker.toLowerCase()
-      return tickers.filter(t => t.ticker.toLowerCase().includes(lowerTargetTicker))    
+      return tickers.filter(t => t.ticker_name.toLowerCase().includes(lowerTargetTicker))    
     }
     else
       return tickers
@@ -70,9 +70,9 @@ export default function TickerDropdown({ onChange }: TickerDropDownProps) {
         }
         { filteredTickers.map(t => (
           <li className="btn btn-neutral btn-xs rounded-none"
-            key={t.ticker}
-            onClick={() => handleFilterChange(t.ticker)}>
-              {t.ticker}
+            key={t.ticker_name}
+            onClick={() => handleFilterChange(t.ticker_name)}>
+              {t.ticker_name}
           </li>
           )) 
         }

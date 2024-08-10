@@ -15,7 +15,7 @@ pub struct NewAccount {
     pub account_name: String,
 }
 
-#[derive(Queryable, Selectable, Serialize)]
+#[derive(Queryable, Selectable, Serialize, Deserialize)]
 #[diesel(table_name = crate::schema::investment)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub struct Investment {
@@ -37,7 +37,7 @@ pub struct NewInvestment {
     pub category: Option<String>,
 }
 
-#[derive(Insertable, Selectable, Queryable)]
+#[derive(Insertable, Selectable, Queryable, Serialize)]
 #[diesel(table_name = crate::schema::ticker)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub struct Ticker {

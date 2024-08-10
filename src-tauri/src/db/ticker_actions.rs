@@ -1,33 +1,32 @@
-use super::utils::{create_connection, List};
+use crate::db::models;
 
-#[derive(Clone, serde::Deserialize, serde::Serialize)]
-pub struct Ticker {
-    ticker: String,
-}
+use super::{
+    models::Ticker,
+    utils::{establish_connection, List},
+};
 
 #[tauri::command]
 pub fn get_tickers() -> Result<List<Ticker>, String> {
-    let conn = create_connection();
-    let mut stmt = conn
-        .prepare("SELECT ticker FROM ticker")
-        .map_err(|err| err.to_string())?;
+    use crate::schema::ticker::dsl::*;
+    use diesel::{QueryDsl, RunQueryDsl, SelectableHelper};
 
-    let rows = stmt
-        .query_map((), |row| {
-            Ok(Ticker {
-                ticker: row.get(0)?,
-            })
-        })
-        .unwrap()
-        .map(|row| row.unwrap())
-        .collect();
+    let conn = &mut establish_connection();
+    let results = ticker.select(models::Ticker::as_select()).load(conn);
 
-    return Ok(List(rows));
+    match results {
+        Ok(res) => Ok(List(res)),
+        Err(err) => Err(err.to_string()),
+    }
 }
 
 #[tauri::command]
-pub fn add_ticker(ticker: String) -> Result<usize, String> {
-    let conn = create_connection();
-    conn.execute("INSERT INTO ticker(ticker) VALUES (?1)", (ticker,))
+pub fn add_ticker(ticker_name: String) -> Result<usize, String> {
+    use crate::schema::ticker;
+    use diesel::RunQueryDsl;
+
+    let conn = &mut establish_connection(); //create_connection();
+    diesel::insert_into(ticker::table)
+        .values(&Ticker { ticker_name })
+        .execute(conn)
         .map_err(|err| err.to_string())
 }
