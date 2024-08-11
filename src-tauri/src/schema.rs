@@ -32,5 +32,6 @@ diesel::table! {
 
 diesel::joinable!(investment -> account (account_id));
 diesel::joinable!(investment -> investment_category (category));
+diesel::joinable!(investment -> ticker (ticker));
 
 diesel::allow_tables_to_appear_in_same_query!(account, investment, investment_category, ticker,);

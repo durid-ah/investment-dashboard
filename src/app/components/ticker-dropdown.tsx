@@ -14,7 +14,7 @@ async function getTickers() {
 }
 
 async function addTicker(ticker: string) {
-  return await invoke('add_ticker', { ticker: ticker })
+  return await invoke('add_ticker', { newTicker: ticker })
 }
 
 export default function TickerDropdown({ onChange }: TickerDropDownProps) {
