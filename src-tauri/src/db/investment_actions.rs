@@ -3,7 +3,6 @@ use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use crate::db::models::{Investment, NewInvestment};
 use crate::db::utils::establish_connection;
 use crate::db::utils::List;
-use crate::schema::investment::ticker;
 
 #[tauri::command]
 pub fn add_investment(mut new_investment: NewInvestment) -> Result<usize, String> {
@@ -51,7 +50,7 @@ pub fn get_investments_by_account(filter_account_id: i32) -> Result<List<Investm
 
     match results {
         Ok(rows) => {
-            let res = rows
+            let rows = rows
                 .into_iter()
                 .map(|mut row| {
                     row.ticker = row.ticker.to_uppercase();
@@ -59,7 +58,7 @@ pub fn get_investments_by_account(filter_account_id: i32) -> Result<List<Investm
                 })
                 .collect();
 
-            Ok(List(res))
+            Ok(List(rows))
         }
         Err(error) => Err(error.to_string()),
     }
