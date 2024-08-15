@@ -4,12 +4,15 @@ import { useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react";
 import { Investment, addInvestment, getInvestmentsByAccount } from "./investment_calls";
 import TickerDropdown from "../components/ticker-dropdown";
+import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 
 type AddInvestmentRowProp = {
   accountId: number
   cancelAddRow: () => void
   addNewInvestment: (investment: Investment) => Promise<void> 
 }
+
+const queryClient = new QueryClient()
 
 function AddInvestmentRow({ accountId, addNewInvestment, cancelAddRow }: AddInvestmentRowProp) {
   const [investment, setInvestment] = useState<Investment>(
@@ -19,7 +22,8 @@ function AddInvestmentRow({ accountId, addNewInvestment, cancelAddRow }: AddInve
       ticker: '', 
       shares: 0, 
       value: 0, 
-      isSelected: false
+      isSelected: false,
+      category: ''
     });
 
   async function addFunction() {
@@ -30,7 +34,8 @@ function AddInvestmentRow({ accountId, addNewInvestment, cancelAddRow }: AddInve
       ticker: '', 
       shares: 0, 
       value: 0, 
-      isSelected: false
+      isSelected: false,
+      category: ''
     });
   }
 
@@ -133,6 +138,7 @@ export default function Page() {
 
   return (
     <main className="flex h-full flex-col items-center justify-between p-24">
+      <QueryClientProvider client={queryClient}>
       <div className="overflow-x-auto h-full">
         <table className="table table-md">
           <thead>
@@ -157,15 +163,16 @@ export default function Page() {
             }
             {
               investments
-                .map(investment => 
-                  (<InvestmentRow 
-                    key={investment.id} 
-                    investment={investment} 
-                    toggleSelect={toggleSelectInvestment}/>))
-            }
+              .map(investment => 
+                (<InvestmentRow 
+                  key={investment.id} 
+                  investment={investment} 
+                  toggleSelect={toggleSelectInvestment}/>))
+                }
           </tbody>
         </table>
       </div>
+      </QueryClientProvider>
     </main>    
   ) 
 }
