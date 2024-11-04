@@ -6,17 +6,17 @@ import { Investment, addInvestment, getInvestmentsByAccount } from "./investment
 import TickerDropdown from "../components/ticker-dropdown";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { EditableValue } from "../components/editable-text";
-import { useInvestmentsQuery } from "./investment-hooks";
+import { useAddInvestmentMutation, useInvestmentsQuery } from "./investment-hooks";
 
 type AddInvestmentRowProp = {
   accountId: number
   cancelAddRow: () => void
-  addNewInvestment: (investment: Investment) => Promise<void> 
 }
 
 const queryClient = new QueryClient()
 
-function AddInvestmentRow({ accountId, addNewInvestment, cancelAddRow }: AddInvestmentRowProp) {
+function AddInvestmentRow({ accountId, cancelAddRow }: AddInvestmentRowProp) {
+  const mutation = useAddInvestmentMutation(accountId)
   const [investment, setInvestment] = useState<Investment>(
     {
       id: 0, 
@@ -26,19 +26,18 @@ function AddInvestmentRow({ accountId, addNewInvestment, cancelAddRow }: AddInve
       value: 0, 
       isSelected: false,
       category: ''
-    });
+    })
 
-  async function addFunction() {
-    await addNewInvestment(investment!)
-    setInvestment({
-      id: 0, 
-      account_id: accountId, 
-      ticker: '', 
-      shares: 0, 
-      value: 0, 
-      isSelected: false,
-      category: ''
-    });
+  function addFunction() {
+    console.log(investment)
+    mutation.mutate(investment!, {
+      onSuccess: () => setInvestment({
+          id: 0, account_id: accountId, 
+          ticker: '', shares: 0, value: 0, 
+          isSelected: false, category: '' 
+        }),
+      onError: (err) => console.error(err)
+    })
   }
 
   return (
@@ -152,7 +151,7 @@ export function InvestmentTable() {
           </thead>
           <tbody>
             { showAdd &&
-              <AddInvestmentRow accountId={accountId} addNewInvestment={addNewInvestment} cancelAddRow={() => null}/>
+              <AddInvestmentRow accountId={accountId} cancelAddRow={() => null}/>
             }
             {
               investments.data?.map(investment => 
