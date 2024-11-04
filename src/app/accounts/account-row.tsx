@@ -2,6 +2,7 @@ import Link from "next/link";
 import Checkbox from "../components/checkbox";
 import { useQueryClient } from "@tanstack/react-query";
 import { Account } from "./account-calls";
+import { EditableValue } from "../components/editable-text";
 
 type AccountProp = {
   account: Account,
@@ -32,9 +33,12 @@ export function AccountRow({account} : AccountProp) {
         </label>
       </th>
       <td>
-        <div className="flex items-center gap-3">
+        {/* <div className="flex items-center gap-3">
           <div contentEditable={"plaintext-only"} className="font-bold">{account.account_name}</div>
-        </div>
+        </div> */}
+        <EditableValue 
+          content={account.account_name} 
+          type="text" onChange={(value => console.log(value)) /* TODO: set up value edititng */ } />
       </td>
       <th className="flex flex-row justify-center">
         <Link href={`/investments?accountId=${account.id}`} 
