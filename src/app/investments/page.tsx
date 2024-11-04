@@ -4,7 +4,8 @@ import { useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react";
 import { Investment, addInvestment, getInvestmentsByAccount } from "./investment_calls";
 import TickerDropdown from "../components/ticker-dropdown";
-import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { EditableValue } from "../components/editable-text";
 
 type AddInvestmentRowProp = {
   accountId: number
@@ -90,7 +91,8 @@ function InvestmentRow({investment, toggleSelect}: InvestmentProp) {
       </td>
       <td>
         <div className="flex items-center gap-3">
-          <div>{investment.shares}</div>
+          <EditableValue content={investment.shares} 
+            type="number" onChange={(value) => console.log(`Value`, value)}/>
         </div>
       </td>
       <td>

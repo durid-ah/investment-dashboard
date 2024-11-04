@@ -1,3 +1,7 @@
+use diesel::query_dsl::methods::FindDsl;
+use diesel::ExpressionMethods;
+use diesel::RunQueryDsl;
+
 use crate::db::models::NewAccount;
 use crate::db::models::*;
 use crate::db::utils::establish_connection;
@@ -16,6 +20,17 @@ pub fn add_account(account_name: &str) {
         })
         .execute(conn)
         .expect("add_account failed");
+}
+
+#[tauri::command]
+pub fn update_account(account_update: Account) -> Result<usize, String> {
+    use crate::schema::account::dsl::*;
+    let conn = &mut establish_connection();
+
+    diesel::update(account.find(account_update.id))
+        .set((account_name.eq(account_update.account_name),))
+        .execute(conn)
+        .map_err(|err| err.to_string())
 }
 
 #[tauri::command]

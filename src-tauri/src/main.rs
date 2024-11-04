@@ -12,6 +12,7 @@ fn main() -> Result<()> {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
             db::account_actions::add_account,
+            db::account_actions::update_account,
             db::account_actions::get_accounts,
             db::account_actions::delete_account,
             db::investment_actions::add_investment,

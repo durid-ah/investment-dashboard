@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { addAccount, deleteAccount, getAccounts } from "./account-calls";
+import { addAccount, deleteAccount, getAccounts, updateAccount } from "./account-calls";
 
 export const useAccountsQuery = () => useQuery({
     queryKey: ['accounts'],
@@ -23,11 +23,19 @@ export const useDeleteAccountMutation = () => {
 }
 
 export const useAddAccountMutation = () => {
-  const internalQueryClient = useQueryClient();
+  const internalQueryClient = useQueryClient()
   return useMutation({
     mutationFn: (accountName: string) => addAccount(accountName),
     onSuccess: () => {
       return internalQueryClient.invalidateQueries({queryKey: ['accounts']})
     }
+  })
+}
+
+export const useUpdateAccountMutation = () => {
+  const internalQueryClient = useQueryClient()
+  return useMutation({
+    mutationFn: updateAccount,
+    onSuccess: () => internalQueryClient.invalidateQueries({queryKey: ['accounts']})
   })
 }

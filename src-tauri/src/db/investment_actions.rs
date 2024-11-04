@@ -21,7 +21,7 @@ pub fn add_investment(mut new_investment: NewInvestment) -> Result<usize, String
 #[tauri::command]
 pub fn update_investment(investment_update: Investment) -> Result<usize, String> {
     use crate::schema::investment::dsl::*;
-    let conn = &mut establish_connection(); //create_connection();
+    let conn = &mut establish_connection();
 
     diesel::update(investment.find(investment_update.id))
         .set((

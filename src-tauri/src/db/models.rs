@@ -1,12 +1,12 @@
 use diesel::{prelude::Insertable, Queryable, Selectable};
 use serde::{Deserialize, Serialize};
 
-#[derive(Queryable, Selectable, serde::Serialize)]
+#[derive(Queryable, Selectable, serde::Serialize, serde::Deserialize, Debug)]
 #[diesel(table_name = crate::schema::account)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub struct Account {
-    id: i32,
-    account_name: String,
+    pub id: i32,
+    pub account_name: String,
 }
 
 #[derive(Insertable)]

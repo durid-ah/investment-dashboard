@@ -3,6 +3,7 @@ import Checkbox from "../components/checkbox";
 import { useQueryClient } from "@tanstack/react-query";
 import { Account } from "./account-calls";
 import { EditableValue } from "../components/editable-text";
+import { useUpdateAccountMutation } from "./account-hooks";
 
 type AccountProp = {
   account: Account,
@@ -10,6 +11,8 @@ type AccountProp = {
 
 export function AccountRow({account} : AccountProp) {
   const internalQueryClient = useQueryClient()
+  const mutation = useUpdateAccountMutation()
+
   const toggleSelect = (accountId: number) => {
     internalQueryClient.setQueryData(['accounts'], (oldAccts: Account[]) => {
       const targetIdx = oldAccts.findIndex(ac => ac.id === accountId);
@@ -38,7 +41,10 @@ export function AccountRow({account} : AccountProp) {
         </div> */}
         <EditableValue 
           content={account.account_name} 
-          type="text" onChange={(value => console.log(value)) /* TODO: set up value edititng */ } />
+          type="text" onChange={(value => {
+            console.log('EditableValue::OnChange')
+            mutation.mutate({...account, account_name: value!.toString()}, { onError: (err) => console.error(err) })
+          }) /* TODO: set up value edititng */ } />
       </td>
       <th className="flex flex-row justify-center">
         <Link href={`/investments?accountId=${account.id}`} 
