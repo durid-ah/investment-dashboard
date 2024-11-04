@@ -2,119 +2,12 @@
 
 import { useSearchParams } from "next/navigation"
 import { useState } from "react";
-import { Investment } from "./investment_calls";
-import TickerDropdown from "../components/ticker-dropdown";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { EditableValue } from "../components/editable-text";
-import { useAddInvestmentMutation, useInvestmentsQuery } from "./investment-hooks";
-
-type AddInvestmentRowProp = {
-  accountId: number
-  cancelAddRow: () => void
-}
+import { useInvestmentsQuery } from "./investment-hooks";
+import { InvestmentRow } from "./investment-row";
+import { AddInvestmentRow } from "./add-investment-row";
 
 const queryClient = new QueryClient()
-
-function AddInvestmentRow({ accountId, cancelAddRow }: AddInvestmentRowProp) {
-  const mutation = useAddInvestmentMutation(accountId)
-  const [investment, setInvestment] = useState<Investment>(
-    {
-      id: 0, 
-      account_id: accountId, 
-      ticker: '', 
-      shares: 0, 
-      value: 0, 
-      isSelected: false,
-      category: ''
-    })
-
-  function addFunction() {
-    console.log(investment)
-    mutation.mutate(investment!, {
-      onSuccess: () => setInvestment({
-          id: 0, account_id: accountId, 
-          ticker: '', shares: 0, value: 0, 
-          isSelected: false, category: '' 
-        }),
-      onError: (err) => console.error(err)
-    })
-  }
-
-  return (
-    <tr>
-      <th></th>
-      <td>
-        <TickerDropdown onChange={(ticker) => setInvestment(inv => ({...inv, ticker}))} />
-      </td>
-      <td>
-        {/** TODO: CHANGE THIS TO DROPDOWN */}
-        <input type="text" 
-          placeholder="category"
-          onChange={(e) => setInvestment(inv => ({...inv, category: e.target.value}))}
-          className="input input-bordered input-xs w-full max-w-xs"/>
-      </td>
-      <td>
-        <input type="number" 
-          placeholder="shares" 
-          onChange={(e) => setInvestment(inv => ({...inv, shares: Number(e.target.value) }))}
-          className="input input-bordered input-xs w-full max-w-xs"/>
-      </td>
-      <td>
-        <input type="number" 
-          placeholder="value"
-          onChange={(e) => setInvestment(inv => ({...inv, value: Number(e.target.value)}))}
-          className="input input-bordered input-xs w-full max-w-xs"/>
-      </td>
-      <th className="flex flex-row justify-center gap-2">
-        <button 
-            className="btn btn-outline btn-success btn-xs" 
-            onClick={addFunction}> add </button>
-        <button className="btn btn-outline btn-xs" onClick={cancelAddRow}>cancel</button>
-      </th>
-    </tr>
-  )  
-}
-
-type InvestmentProp = {
-  investment: Investment,
-  toggleSelect: (toggleIdx: number) => void
-}
-
-function InvestmentRow({investment, toggleSelect}: InvestmentProp) {
-  return (
-    <tr>
-      <th>
-        <label>
-          <input type="checkbox" 
-            className="checkbox"
-            checked={investment.isSelected}
-            onChange={() => toggleSelect(investment.id)}/>
-        </label>
-      </th>
-      <td>
-        <div className="flex items-center gap-3">
-          <div className="font-bold">{investment.ticker}</div>
-        </div>
-      </td>
-      <td>
-      <div className="flex items-center gap-3">
-          <div className="font-bold">{investment.category}</div>
-        </div>
-      </td>
-      <td>
-        <div className="flex items-center gap-3">
-          <EditableValue content={investment.shares} 
-            type="number" onChange={(value) => console.log(`Value`, value)}/>
-        </div>
-      </td>
-      <td>
-        <div className="flex items-center gap-3">
-          <div>{investment.value}</div>
-        </div>
-      </td>
-    </tr>
-  )  
-}
 
 export function InvestmentTable() {
   const [showAdd, setShowAdd] = useState<boolean>(false);
