@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { getInvestmentsByAccount } from "./investment_calls";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { addInvestment, getInvestmentsByAccount } from "./investment_calls";
 
 export const useInvestmentsQuery = (accountId: number) => useQuery({
     queryKey: ['investments', accountId ],
@@ -10,3 +10,12 @@ export const useInvestmentsQuery = (accountId: number) => useQuery({
             return r
         })),
 })
+
+export const useAddInvestmentMutation = (accountId: number) => {
+    const internalQueryClient = useQueryClient()
+    return useMutation({
+        mutationFn: addInvestment,
+        onSuccess: () => internalQueryClient
+            .invalidateQueries({queryKey: ['investments', accountId]}) 
+    })
+}
