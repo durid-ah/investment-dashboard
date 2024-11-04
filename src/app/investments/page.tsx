@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation"
 import { useState } from "react";
-import { Investment, addInvestment, getInvestmentsByAccount } from "./investment_calls";
+import { Investment } from "./investment_calls";
 import TickerDropdown from "../components/ticker-dropdown";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { EditableValue } from "../components/editable-text";
@@ -45,6 +45,13 @@ function AddInvestmentRow({ accountId, cancelAddRow }: AddInvestmentRowProp) {
       <th></th>
       <td>
         <TickerDropdown onChange={(ticker) => setInvestment(inv => ({...inv, ticker}))} />
+      </td>
+      <td>
+        {/** TODO: CHANGE THIS TO DROPDOWN */}
+        <input type="text" 
+          placeholder="category"
+          onChange={(e) => setInvestment(inv => ({...inv, category: e.target.value}))}
+          className="input input-bordered input-xs w-full max-w-xs"/>
       </td>
       <td>
         <input type="number" 
@@ -90,6 +97,11 @@ function InvestmentRow({investment, toggleSelect}: InvestmentProp) {
         </div>
       </td>
       <td>
+      <div className="flex items-center gap-3">
+          <div className="font-bold">{investment.category}</div>
+        </div>
+      </td>
+      <td>
         <div className="flex items-center gap-3">
           <EditableValue content={investment.shares} 
             type="number" onChange={(value) => console.log(`Value`, value)}/>
@@ -109,15 +121,6 @@ export function InvestmentTable() {
   const searchParams = useSearchParams();
   const accountId = Number(searchParams.get('accountId'))
   const investments = useInvestmentsQuery(accountId)
-
-  async function addNewInvestment(investment: Investment) {
-    await addInvestment(investment);
-    getInvestmentsByAccount(accountId)
-      .then(res => {
-        res.forEach(inv => inv.isSelected = false)
-        // setInvestments(res) 
-      }) 
-  }
 
   function toggleSelectInvestment(investmentId: number) {
     const newInvestments = investments.data.map(inv => {
@@ -141,6 +144,7 @@ export function InvestmentTable() {
                 </label>
               </th>
               <th>Ticker</th>
+              <th>Category</th>
               <th>Shares</th>
               <th>Value</th>
               <th className="flex flex-col gap-2">
