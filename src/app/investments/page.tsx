@@ -1,11 +1,12 @@
 'use client'
 
 import { useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Investment, addInvestment, getInvestmentsByAccount } from "./investment_calls";
 import TickerDropdown from "../components/ticker-dropdown";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { EditableValue } from "../components/editable-text";
+import { useInvestmentsQuery } from "./investment-hooks";
 
 type AddInvestmentRowProp = {
   accountId: number
@@ -104,43 +105,33 @@ function InvestmentRow({investment, toggleSelect}: InvestmentProp) {
   )  
 }
 
-export default function Page() {
+export function InvestmentTable() {
   const [showAdd, setShowAdd] = useState<boolean>(false);
   const searchParams = useSearchParams();
   const accountId = Number(searchParams.get('accountId'))
-  const [investments, setInvestments] = useState<Investment[]>([])
-
-  useEffect(() => {
-    getInvestmentsByAccount(accountId)
-      .then(res => {
-        res.forEach(inv => inv.isSelected = false)
-        setInvestments(res) 
-      }) 
-  }, [accountId])
+  const investments = useInvestmentsQuery(accountId)
 
   async function addNewInvestment(investment: Investment) {
     await addInvestment(investment);
     getInvestmentsByAccount(accountId)
       .then(res => {
         res.forEach(inv => inv.isSelected = false)
-        setInvestments(res) 
+        // setInvestments(res) 
       }) 
   }
 
   function toggleSelectInvestment(investmentId: number) {
-    const newInvestments = investments.map(inv => {
+    const newInvestments = investments.data.map(inv => {
       if (inv.id === investmentId)
         inv.isSelected = !inv.isSelected
 
       return inv
     })
     
-    setInvestments(newInvestments)
+    // setInvestments(newInvestments)
   }
 
   return (
-    <main className="flex h-full flex-col items-center justify-between p-24">
-      <QueryClientProvider client={queryClient}>
       <div className="overflow-x-auto h-full">
         <table className="table table-md">
           <thead>
@@ -164,8 +155,7 @@ export default function Page() {
               <AddInvestmentRow accountId={accountId} addNewInvestment={addNewInvestment} cancelAddRow={() => null}/>
             }
             {
-              investments
-              .map(investment => 
+              investments.data?.map(investment => 
                 (<InvestmentRow 
                   key={investment.id} 
                   investment={investment} 
@@ -174,7 +164,15 @@ export default function Page() {
           </tbody>
         </table>
       </div>
-      </QueryClientProvider>
-    </main>    
   ) 
+}
+
+export default function Page() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <main className="flex h-full flex-col items-center justify-between p-24">
+        <InvestmentTable/>
+      </main>
+    </QueryClientProvider>
+  )
 }
