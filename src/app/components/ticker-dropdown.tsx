@@ -22,6 +22,7 @@ export default function TickerDropdown({ onChange }: TickerDropDownProps) {
   const [filteredTickers, setFilteredTickers] = useState<Ticker[]>([])
   const [selectedTicker, setSelectedTicker] = useState<string>('')
 
+  // TODO: replace with tanstack query
   useEffect(() => {
     getTickers()
       .then(res => {
@@ -47,6 +48,7 @@ export default function TickerDropdown({ onChange }: TickerDropDownProps) {
   }
 
   async function addNewTicker(ticker:string) {
+    // TODO: replace with tanstack query
     await addTicker(ticker.toUpperCase())
     const _tickers = await getTickers()
     setTickers(_tickers)

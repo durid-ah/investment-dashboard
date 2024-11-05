@@ -40,7 +40,7 @@ export function AddInvestmentRow({ accountId, cancelAddRow }: AddInvestmentRowPr
             <TickerDropdown onChange={(ticker) => setInvestment(inv => ({...inv, ticker}))} />
         </td>
         <td>
-            {/** TODO: CHANGE THIS TO DROPDOWN */}
+            {/** TODO: CHANGE THIS TO DROPDOWN ALSO CREATE DROPDOWN */}
             <input type="text" 
             placeholder="category"
             onChange={(e) => setInvestment(inv => ({...inv, category: e.target.value}))}

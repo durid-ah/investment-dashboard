@@ -1,3 +1,4 @@
+import { EditableValue } from "../components/editable-text"
 import { Investment } from "./investment_calls"
 
 type InvestmentProp = {
