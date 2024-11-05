@@ -18,17 +18,20 @@ export function InvestmentRow({investment, toggleSelect}: InvestmentProp) {
         </label>
       </th>
       <td>
+        {/* TODO: We need an editable dropdown */}
         <div className="flex items-center gap-3">
           <div className="font-bold">{investment.ticker}</div>
         </div>
       </td>
       <td>
+        {/* TODO: We need an editable dropdown */}
       <div className="flex items-center gap-3">
           <div className="font-bold">{investment.category}</div>
         </div>
       </td>
       <td>
         <div className="flex items-center gap-3">
+          {/* TODO: Persistence is needed */}
           <EditableValue content={investment.shares} 
             type="number" onChange={(value) => console.log(`Value`, value)}/>
         </div>

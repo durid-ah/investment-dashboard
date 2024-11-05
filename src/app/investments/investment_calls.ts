@@ -18,3 +18,5 @@ export async function getInvestmentsByAccount(accountId: number) {
 export async function addInvestment(investment: Investment) {
     return await invoke('add_investment', {newInvestment: investment})
 }
+
+// TODO: Add the other commands

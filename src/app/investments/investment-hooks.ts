@@ -19,3 +19,5 @@ export const useAddInvestmentMutation = (accountId: number) => {
             .invalidateQueries({queryKey: ['investments', accountId]}) 
     })
 }
+
+// TODO: Add the other commands

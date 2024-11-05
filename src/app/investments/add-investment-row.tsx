@@ -22,7 +22,6 @@ export function AddInvestmentRow({ accountId, cancelAddRow }: AddInvestmentRowPr
     })
 
     function addFunction() {
-        console.log(investment)
         mutation.mutate(investment!, {
         onSuccess: () => setInvestment({
             id: 0, account_id: accountId, 
