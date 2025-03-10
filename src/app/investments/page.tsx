@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation"
 import { useState } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, useQueryClient } from "@tanstack/react-query";
 import { useInvestmentsQuery } from "./investment-hooks";
 import { InvestmentRow } from "./investment-row";
 import { AddInvestmentRow } from "./add-investment-row";
@@ -14,6 +14,20 @@ export function InvestmentTable() {
   const searchParams = useSearchParams();
   const accountId = Number(searchParams.get('accountId'))
   const investments = useInvestmentsQuery(accountId)
+  const internalQueryClient = useQueryClient()
+
+  const toggleSelectAll = () => {
+    const everyChecked = investments.data?.every(ac => ac.isSelected)
+    let newInvestments = null
+
+    if (everyChecked) {
+      newInvestments = investments.data?.map(inv => ({ ...inv, isSelected: false}))
+    } else {
+      newInvestments = investments.data?.map(inv => ({ ...inv, isSelected: true}))
+    }
+
+    internalQueryClient.setQueryData(['investments', accountId], newInvestments)
+  }
 
   return (
       <div className="overflow-x-auto h-full">
@@ -22,7 +36,10 @@ export function InvestmentTable() {
             <tr>
               <th>
                 <label>
-                  {/* TODO: Add Select All */}
+                  <input type="checkbox"
+                    className="checkbox checkbox-primary"
+                    checked={investments.data?.every(inv => inv.isSelected) ?? false }
+                    onChange={() => toggleSelectAll()}/>
                 </label>
               </th>
               <th>Ticker</th>
