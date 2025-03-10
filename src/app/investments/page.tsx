@@ -15,17 +15,6 @@ export function InvestmentTable() {
   const accountId = Number(searchParams.get('accountId'))
   const investments = useInvestmentsQuery(accountId)
 
-  function toggleSelectInvestment(investmentId: number) {
-    const newInvestments = investments.data.map(inv => {
-      if (inv.id === investmentId)
-        inv.isSelected = !inv.isSelected
-
-      return inv
-    })
-    
-    // setInvestments(newInvestments)
-  }
-
   return (
       <div className="overflow-x-auto h-full">
         <table className="table table-md">
@@ -54,8 +43,7 @@ export function InvestmentTable() {
               investments.data?.map(investment => 
                 (<InvestmentRow 
                   key={investment.id} 
-                  investment={investment} 
-                  toggleSelect={toggleSelectInvestment}/>))
+                  investment={investment} />))
                 }
           </tbody>
         </table>

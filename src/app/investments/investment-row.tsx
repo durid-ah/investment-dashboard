@@ -1,12 +1,26 @@
+import { useQueryClient } from "@tanstack/react-query"
 import { EditableValue } from "../components/editable-text"
 import { Investment } from "./investment_calls"
 
 type InvestmentProp = {
-  investment: Investment,
-  toggleSelect: (toggleIdx: number) => void
+  investment: Investment
 }
 
-export function InvestmentRow({investment, toggleSelect}: InvestmentProp) {
+export function InvestmentRow({investment}: InvestmentProp) {
+  const internalQueryClient = useQueryClient()
+  const toggleSelect = (investmentId: number) => {
+    internalQueryClient.setQueryData(['investments', investment.account_id], (oldInvestments: Investment[]) => {
+      const targetIdx = oldInvestments.findIndex(inv => inv.id === investmentId)
+      const newInvestments = [...oldInvestments]
+      newInvestments[targetIdx] = {
+        ...newInvestments[targetIdx],
+        isSelected: !newInvestments[targetIdx].isSelected
+      }
+
+      return newInvestments
+    })
+  }
+
   return (
     <tr>
       <th>
