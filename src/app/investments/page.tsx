@@ -30,7 +30,7 @@ export function InvestmentTable() {
   }
 
   return (
-      <div className="overflow-x-auto h-full">
+      <div className="h-full pb-8">
         <table className="table table-md">
           <thead>
             <tr>
