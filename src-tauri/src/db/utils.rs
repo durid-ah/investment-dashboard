@@ -1,5 +1,8 @@
 use diesel::{connection::SimpleConnection, Connection, SqliteConnection};
+use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
 use std::env;
+
+const MIGRATIONS: EmbeddedMigrations = embed_migrations!();
 
 #[derive(Clone, serde::Serialize)]
 pub struct List<T>(pub Vec<T>);
@@ -11,6 +14,10 @@ pub fn establish_connection() -> SqliteConnection {
         .map(|mut conn| {
             conn.batch_execute("PRAGMA foreign_keys = ON")
                 .expect("failed to enable foreign keys");
+
+            conn.run_pending_migrations(MIGRATIONS)
+                .expect("failed to run the pending migrations");
+
             conn
         })
         .unwrap()
