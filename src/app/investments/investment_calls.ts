@@ -19,4 +19,8 @@ export async function addInvestment(investment: Investment) {
     return await invoke('add_investment', {newInvestment: investment})
 }
 
-// TODO: Add the other commands
+export async function updateInvestment(investment: Investment) {
+    return await invoke('update_investment', {investmentUpdate: investment})
+}
+
+// TODO: Delete investments commands

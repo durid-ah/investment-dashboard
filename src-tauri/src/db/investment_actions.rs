@@ -34,6 +34,9 @@ pub fn update_investment(investment_update: Investment) -> Result<usize, String>
         .map_err(|err| err.to_string())
 }
 
+// TODO: Delete Investments command
+// TODO: Should apply delete for investment_ids and account_id
+
 #[tauri::command]
 pub fn get_investments_by_account(filter_account_id: i32) -> Result<List<Investment>, String> {
     use crate::schema::investment::dsl::*;
