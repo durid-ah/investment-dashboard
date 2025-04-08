@@ -34,8 +34,20 @@ pub fn update_investment(investment_update: Investment) -> Result<usize, String>
         .map_err(|err| err.to_string())
 }
 
-// TODO: Delete Investments command
-// TODO: Should apply delete for investment_ids and account_id
+#[tauri::command]
+pub fn delete_investment(id_to_delete: i32, account_id_to_delete: i32) -> Result<usize, String> {
+    use crate::schema::investment::dsl::*;
+    use diesel::ExpressionMethods;
+    use diesel::RunQueryDsl;
+
+    let conn = &mut establish_connection();
+    diesel::delete(investment)
+        .filter(id.eq(id_to_delete))
+        .filter(account_id.eq(account_id_to_delete))
+        .execute(conn)
+        .map_err(|err| err.to_string())
+}
+
 
 #[tauri::command]
 pub fn get_investments_by_account(filter_account_id: i32) -> Result<List<Investment>, String> {

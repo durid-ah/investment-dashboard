@@ -23,4 +23,6 @@ export async function updateInvestment(investment: Investment) {
     return await invoke('update_investment', {investmentUpdate: investment})
 }
 
-// TODO: Delete investments commands
+export async function deleteInvestment(investmentId: number, accountId: number) {
+    return await invoke('delete_investment', {idToDelete: investmentId, accountIdToDelete: accountId})   
+}

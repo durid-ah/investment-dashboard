@@ -17,6 +17,7 @@ fn main() -> Result<()> {
             db::account_actions::delete_account,
             db::investment_actions::add_investment,
             db::investment_actions::update_investment,
+            db::investment_actions::delete_investment,
             db::investment_actions::get_investments_by_account,
             db::ticker_actions::get_tickers,
             db::ticker_actions::add_ticker
