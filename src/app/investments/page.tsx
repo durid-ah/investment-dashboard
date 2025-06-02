@@ -54,7 +54,7 @@ export function InvestmentTable() {
           </thead>
           <tbody>
             { showAdd &&
-              <AddInvestmentRow accountId={accountId} cancelAddRow={() => null}/>
+              <AddInvestmentRow accountId={accountId} cancelAddRow={() => setShowAdd(false)}/>
             }
             {
               investments.data?.map(investment => 

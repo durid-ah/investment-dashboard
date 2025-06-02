@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useAddInvestmentMutation } from "../hooks/investment-hooks"
 import TickerDropdown from "../components/ticker-dropdown"
 import { Investment } from "../backend-calls/investment-calls"
+import CategoryDropdown from "../components/category-dropdown"
 
 type AddInvestmentRowProp = {
     accountId: number
@@ -34,35 +35,31 @@ export function AddInvestmentRow({ accountId, cancelAddRow }: AddInvestmentRowPr
 
     return (
         <tr>
-        <th></th>
-        <td>
-            <TickerDropdown onChange={(ticker) => setInvestment(inv => ({...inv, ticker}))} />
-        </td>
-        <td>
-            {/** TODO: CHANGE THIS TO DROPDOWN ALSO CREATE DROPDOWN */}
-            <input type="text" 
-            placeholder="category"
-            onChange={(e) => setInvestment(inv => ({...inv, category: e.target.value}))}
-            className="input input-bordered input-xs w-full max-w-xs"/>
-        </td>
-        <td>
-            <input type="number" 
-            placeholder="shares" 
-            onChange={(e) => setInvestment(inv => ({...inv, shares: Number(e.target.value) }))}
-            className="input input-bordered input-xs w-full max-w-xs"/>
-        </td>
-        <td>
-            <input type="number" 
-            placeholder="value"
-            onChange={(e) => setInvestment(inv => ({...inv, value: Number(e.target.value)}))}
-            className="input input-bordered input-xs w-full max-w-xs"/>
-        </td>
-        <th className="flex flex-row justify-center gap-2">
-            <button 
-                className="btn btn-outline btn-success btn-xs" 
-                onClick={addFunction}> add </button>
-            <button className="btn btn-outline btn-xs" onClick={cancelAddRow}>cancel</button>
-        </th>
+            <th></th>
+            <td>
+                <TickerDropdown onChange={(ticker) => setInvestment(inv => ({...inv, ticker}))} />
+            </td>
+            <td>
+                <CategoryDropdown onChange={(category) => setInvestment(inv => ({...inv, category}))} />
+            </td>
+            <td>
+                <input type="number" 
+                placeholder="shares" 
+                onChange={(e) => setInvestment(inv => ({...inv, shares: Number(e.target.value) }))}
+                className="input input-bordered input-xs w-full max-w-xs"/>
+            </td>
+            <td>
+                <input type="number" 
+                placeholder="value"
+                onChange={(e) => setInvestment(inv => ({...inv, value: Number(e.target.value)}))}
+                className="input input-bordered input-xs w-full max-w-xs"/>
+            </td>
+            <th className="flex flex-row justify-center gap-2">
+                <button 
+                    className="btn btn-outline btn-success btn-xs" 
+                    onClick={addFunction}> add </button>
+                <button className="btn btn-outline btn-xs" onClick={cancelAddRow}>cancel</button>
+            </th>
         </tr>
     )  
 }
