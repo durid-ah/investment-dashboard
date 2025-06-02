@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Ticker, useAddTickerMutation, useGetTickersQuery } from "../hooks/ticker-hooks";
+import { useAddTickerMutation, useGetTickersQuery } from "../hooks/ticker-hooks";
+import { Ticker } from "../backend-calls/ticker-calls";
 
 type TickerDropDownProps = {
   onChange: (ticker: string) => void

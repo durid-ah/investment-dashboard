@@ -1,5 +1,10 @@
 import { invoke } from "@tauri-apps/api";
-import { Ticker } from "./ticker-hooks";
+
+export type Ticker = {
+    id: number,
+    ticker_name: string
+}
+
 
 export async function getTickers() {
     return await invoke<Ticker[]>('get_tickers');
