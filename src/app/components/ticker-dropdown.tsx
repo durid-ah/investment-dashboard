@@ -1,35 +1,15 @@
-import { invoke } from "@tauri-apps/api"
-import { useEffect, useState } from "react";
-
-type Ticker = {
-  ticker_name: string
-}
+import { useState } from "react";
+import { Ticker, useAddTickerMutation, useGetTickersQuery } from "../hooks/ticker-hooks";
 
 type TickerDropDownProps = {
   onChange: (ticker: string) => void
 }
 
-async function getTickers() {
-  return await invoke<Ticker[]>('get_tickers');
-}
-
-async function addTicker(ticker: string) {
-  return await invoke('add_ticker', { newTicker: ticker })
-}
-
 export default function TickerDropdown({ onChange }: TickerDropDownProps) {
-  const [tickers, setTickers] = useState<Ticker[]>([])
-  const [filteredTickers, setFilteredTickers] = useState<Ticker[]>([])
+  const {data: tickers } = useGetTickersQuery()
+  const mutation = useAddTickerMutation()
   const [selectedTicker, setSelectedTicker] = useState<string>('')
-
-  // TODO: replace with tanstack query
-  useEffect(() => {
-    getTickers()
-      .then(res => {
-        setTickers(res)
-        setFilteredTickers(filterTickers(res, selectedTicker))
-      })
-  }, [])
+  const [filteredTickers, setFilteredTickers] = useState<Ticker[]>(filterTickers(tickers, selectedTicker))
 
   function filterTickers(tickers: Ticker[], targetTicker: string) {
     if (targetTicker) {
@@ -46,25 +26,21 @@ export default function TickerDropdown({ onChange }: TickerDropDownProps) {
     setSelectedTicker(_ticker)
     onChange(_ticker)
   }
-
+  
   async function addNewTicker(ticker:string) {
-    // TODO: replace with tanstack query
-    await addTicker(ticker.toUpperCase())
-    const _tickers = await getTickers()
-    setTickers(_tickers)
-    setFilteredTickers(filterTickers(_tickers, selectedTicker))
+    mutation.mutate(ticker.toUpperCase())
   }
 
   return(
     <div className="dropdown dropdown-bottom">
       <input tabIndex={0} 
-        type="text" 
+        type="text"
         className="input input-bordered input-xs w-full max-w-xs"
         value={selectedTicker}
         onChange={e => handleFilterChange(e.target.value)}/>
       <ul tabIndex={0} 
         className="dropdown-content menu neutral rounded-md z-[1] w-32 shadow overflow-hidden p-0">
-        { selectedTicker && 
+        { selectedTicker && !tickers.find(t => t.ticker_name === selectedTicker) && 
           <li className="btn btn-neutral btn-xs rounded-none"
             onClick={() => addNewTicker(selectedTicker)}>
             Add Ticker
