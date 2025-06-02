@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query"
 import { EditableValue } from "../components/editable-text"
-import { Investment } from "./investment_calls"
+import { Investment } from "./investment-calls"
 
 type InvestmentProp = {
   investment: Investment

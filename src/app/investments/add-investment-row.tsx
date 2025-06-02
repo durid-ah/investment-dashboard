@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useAddInvestmentMutation } from "./investment-hooks"
 import TickerDropdown from "../components/ticker-dropdown"
-import { Investment } from "./investment_calls"
+import { Investment } from "./investment-calls"
 
 type AddInvestmentRowProp = {
     accountId: number
