@@ -36,15 +36,11 @@ export function AccountRow({account} : AccountProp) {
         </label>
       </th>
       <td>
-        {/* <div className="flex items-center gap-3">
-          <div contentEditable={"plaintext-only"} className="font-bold">{account.account_name}</div>
-        </div> */}
         <EditableValue 
           content={account.account_name} 
           type="text" onChange={(value => {
-            console.log('EditableValue::OnChange')
             mutation.mutate({...account, account_name: value!.toString()}, { onError: (err) => console.error(err) })
-          }) /* TODO: set up value edititng */ } />
+          })} />
       </td>
       <th className="flex flex-row justify-center">
         <Link href={`/investments?accountId=${account.id}`} 
