@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { addInvestment, deleteInvestment, getInvestmentsByAccount, updateInvestment } from "./investment-calls";
+import { addInvestment, deleteInvestment, getInvestmentsByAccount, updateInvestment } from "../backend-calls/investment-calls";
 
 export const useInvestmentsQuery = (accountId: number) => useQuery({
     queryKey: ['investments', accountId ],

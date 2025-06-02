@@ -1,9 +1,9 @@
 import Link from "next/link";
 import Checkbox from "../components/checkbox";
 import { useQueryClient } from "@tanstack/react-query";
-import { Account } from "./account-calls";
+import { Account } from "../backend-calls/account-calls";
 import { EditableValue } from "../components/editable-text";
-import { useUpdateAccountMutation } from "./account-hooks";
+import { useUpdateAccountMutation } from "../hooks/account-hooks";
 
 type AccountProp = {
   account: Account,

@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { addTicker } from "./ticker-call";
-import { getTickers } from "./ticker-call";
+import { addTicker } from "../backend-calls/ticker-calls";
+import { getTickers } from "../backend-calls/ticker-calls";
+
 
 export type Ticker = {
     ticker_name: string

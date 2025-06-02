@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { addAccount, deleteAccount, getAccounts, updateAccount } from "./account-calls";
+import { addAccount, deleteAccount, getAccounts, updateAccount } from "../backend-calls/account-calls";
 
 export const useAccountsQuery = () => useQuery({
     queryKey: ['accounts'],

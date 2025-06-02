@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { useAccountsQuery, useAddAccountMutation, useDeleteAccountMutation } from './account-hooks';
+import { useAccountsQuery, useAddAccountMutation, useDeleteAccountMutation } from '../hooks/account-hooks';
 import { AccountRow } from './account-row';
 
 type AddAccountRowProp = {

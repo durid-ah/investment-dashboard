@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation"
 import { useState } from "react";
 import { QueryClient, QueryClientProvider, useQueryClient } from "@tanstack/react-query";
-import { useInvestmentsQuery } from "./investment-hooks";
+import { useInvestmentsQuery } from "../hooks/investment-hooks";
 import { InvestmentRow } from "./investment-row";
 import { AddInvestmentRow } from "./add-investment-row";
 
