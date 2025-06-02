@@ -48,7 +48,6 @@ pub fn delete_investment(id_to_delete: i32, account_id_to_delete: i32) -> Result
         .map_err(|err| err.to_string())
 }
 
-
 #[tauri::command]
 pub fn get_investments_by_account(filter_account_id: i32) -> Result<List<Investment>, String> {
     use crate::schema::investment::dsl::*;

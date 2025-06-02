@@ -43,3 +43,10 @@ pub struct NewInvestment {
 pub struct Ticker {
     pub ticker_name: String,
 }
+
+#[derive(Insertable, Selectable, Queryable, Serialize)]
+#[diesel(table_name = crate::schema::investment_category)]
+#[diesel(check_for_backend(diesel::sqlite::Sqlite))]
+pub struct InvestmentCategory {
+    pub category: String,
+}

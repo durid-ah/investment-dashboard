@@ -9,7 +9,7 @@ export type Account = {
 export async function getAccounts() {
   return await invoke<Account[]>('get_accounts')
 }
-      
+
 export async function deleteAccount(accountId: number) {
   await invoke('delete_account', {idToDelete: accountId})
 }
