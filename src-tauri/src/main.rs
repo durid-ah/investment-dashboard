@@ -21,7 +21,8 @@ fn main() -> Result<()> {
             db::investment_actions::get_investments_by_account,
             db::ticker_actions::get_tickers,
             db::ticker_actions::add_ticker,
-            db::investment_category_actions::get_categories
+            db::investment_category_actions::get_categories,
+            db::investment_category_actions::add_category
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

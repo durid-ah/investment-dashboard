@@ -22,3 +22,14 @@ pub fn get_categories() -> Result<List<InvestmentCategory>, String> {
     }
 }
 
+#[tauri::command]
+pub fn add_category(new_category: String) -> Result<usize, String> {
+    use crate::schema::investment_category;
+    use diesel::RunQueryDsl;
+
+    let conn = &mut establish_connection();
+    diesel::insert_into(investment_category::table)
+        .values(&models::InvestmentCategory { category: new_category })
+        .execute(conn)
+        .map_err(|err| err.to_string())
+}
