@@ -23,9 +23,11 @@ pub fn update_investment(investment_update: Investment) -> Result<usize, String>
     use crate::schema::investment::dsl::*;
     let conn = &mut establish_connection();
 
+    let _ticker = investment_update.ticker.to_lowercase();
+
     diesel::update(investment.find(investment_update.id))
         .set((
-            ticker.eq(investment_update.ticker),
+            ticker.eq(_ticker),
             shares.eq(investment_update.shares),
             value.eq(investment_update.value),
             category.eq(investment_update.category),

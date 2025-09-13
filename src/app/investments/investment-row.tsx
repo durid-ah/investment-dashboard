@@ -1,6 +1,8 @@
 import { useQueryClient } from "@tanstack/react-query"
 import { EditableValue } from "../components/editable-text"
 import { Investment } from "../backend-calls/investment-calls"
+import { EditableTicker } from "../components/editable-ticker"
+import { useUpdateInvestmentMutation } from "../hooks/investment-hooks"
 
 type InvestmentProp = {
   investment: Investment
@@ -8,6 +10,8 @@ type InvestmentProp = {
 
 export function InvestmentRow({investment}: InvestmentProp) {
   const internalQueryClient = useQueryClient()
+  const mutation = useUpdateInvestmentMutation(investment.account_id)
+
   const toggleSelect = (investmentId: number) => {
     internalQueryClient.setQueryData(['investments', investment.account_id], (oldInvestments: Investment[]) => {
       const targetIdx = oldInvestments.findIndex(inv => inv.id === investmentId)
@@ -21,6 +25,14 @@ export function InvestmentRow({investment}: InvestmentProp) {
     })
   }
 
+  function updateTicker(ticker: string) {
+    mutation.mutate({...investment, ticker}, 
+      { 
+        onSuccess: () => internalQueryClient.invalidateQueries({queryKey: ['investments', investment.account_id]}),
+        onError: (err) => console.error(err)
+      })
+  }
+
   return (
     <tr>
       <th>
@@ -32,9 +44,11 @@ export function InvestmentRow({investment}: InvestmentProp) {
         </label>
       </th>
       <td>
-        {/* TODO: We need an editable dropdown */}
+        {/* TODO: Handle persistence */}
         <div className="flex items-center gap-3">
-          <div className="font-bold">{investment.ticker}</div>
+          <EditableTicker 
+            content={investment.ticker} 
+            onChange={(value) => updateTicker(value!.toString())}/>
         </div>
       </td>
       <td>

@@ -3,11 +3,10 @@
 import { useState } from "react"
 import TickerDropdown from "./ticker-dropdown";
 
-type Value = string | number | readonly string[] | undefined;
 
 type EditableTickerProps = {
-    content: Value,
-    onChange?: (value: Value) => void
+    content: string,
+    onChange?: (value: string) => void
 }
 
 export function EditableTicker({content, onChange} : EditableTickerProps) {
@@ -15,32 +14,34 @@ export function EditableTicker({content, onChange} : EditableTickerProps) {
     const [field, setField] = useState(content)
 
     function onBlurHandler() {
+        console.log('EditableTicker', `onBlurHandler`)
         setIsEditMode(false)
         if (onChange) {
             onChange(field)
         }
     }
 
-    function onChangeHandler(value: Value) {
+    function onTickerSelectHandler(value: string) {
+        console.log('EditableTicker', `onTickerSelectHandler`, value)
         setField(value)
+        onChange && onChange(value)
     }
 
     function divClickedHandler() {
        setIsEditMode(true)
     }
 
+    // TODO: Add a function that handles the ticker selection
+    // TODO: Move the field update to the ticker selection function
+    // TODO: Maybe call onChange in the ticker selection function?
+
     return (
         <>
             {isEditMode && (
-                <TickerDropdown 
-                    onChange={(ticker) => onChangeHandler(ticker)}
+                <TickerDropdown
+                    onTickerSelected={(ticker) => onTickerSelectHandler(ticker)}
+                    onBlur={() => onBlurHandler()}
                 />
-            // <input autoFocus type={type} 
-            //     ref={input => input?.focus()}
-            //     className="w-48"
-            //     hidden={!isEditMode} value={field}
-            //     onChange={(e) => onChangeHandler(e.target.value)} 
-            //     onBlur={() => onBlurHandler()}/>
             )}
             <div hidden={isEditMode} className="w-48" 
                 onClick={() => divClickedHandler()}>
