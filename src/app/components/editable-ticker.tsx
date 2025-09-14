@@ -41,6 +41,7 @@ export function EditableTicker({content, onChange} : EditableTickerProps) {
                 <TickerDropdown
                     onTickerSelected={(ticker) => onTickerSelectHandler(ticker)}
                     onBlur={() => onBlurHandler()}
+                    initialValue={field}
                 />
             )}
             <div hidden={isEditMode} className="w-48" 

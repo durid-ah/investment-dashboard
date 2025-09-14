@@ -1,18 +1,21 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useAddTickerMutation, useGetTickersQuery } from "../hooks/ticker-hooks";
 import { Ticker } from "../backend-calls/ticker-calls";
 
 type TickerDropDownProps = {
-  onChange?: (ticker: string) => void
+  initialValue?: string
   onBlur?: () => void
   onTickerSelected?: (ticker: string) => void
 }
 
 // TODO: Create an event that triggers when a ticker is selected
-export default function TickerDropdown({ onChange, onBlur, onTickerSelected }: TickerDropDownProps) {
+export default function TickerDropdown({ initialValue, onBlur, onTickerSelected }: TickerDropDownProps) {
   const {data: tickers } = useGetTickersQuery()
   const mutation = useAddTickerMutation()
-  const [selectedTicker, setSelectedTicker] = useState<string>('')
+
+  const divRef = useRef<HTMLDivElement>(null)
+
+  const [selectedTicker, setSelectedTicker] = useState<string>(initialValue ?? '')
   const [filteredTickers, setFilteredTickers] = useState<Ticker[]>(filterTickers(tickers, selectedTicker))
 
   function filterTickers(tickers: Ticker[], targetTicker: string) {
@@ -29,7 +32,6 @@ export default function TickerDropdown({ onChange, onBlur, onTickerSelected }: T
     const _ticker = ticker.toUpperCase()
     setFilteredTickers(filterTickers(tickers, ticker))
     setSelectedTicker(_ticker)
-    onChange?.(_ticker)
   }
 
   function handleTickerSelected(ticker: string) {
@@ -38,18 +40,23 @@ export default function TickerDropdown({ onChange, onBlur, onTickerSelected }: T
 
   function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
     console.log('TickerDropdown', `handleKeyPress`, selectedTicker, e.code)
-    if (e.code === 'Enter') {
+    if (e.code === 'Enter' || e.code === 'NumpadEnter') {
       handleTickerSelected(selectedTicker)
-      // e.currentTarget.blur()
+      e.currentTarget.blur()
+    } else if (e.code === 'Escape') {
+      setSelectedTicker(prev => initialValue ?? prev)
+      handleTickerSelected(initialValue ?? selectedTicker)
+      e.currentTarget.blur()
     }
   }
   
   async function addNewTicker(ticker:string) {
     mutation.mutate(ticker.toUpperCase())
+    // TODO: Should also set the new ticker to the internal ticker
   }
 
   return(
-    <div className="dropdown dropdown-bottom" onBlur={onBlur}>
+    <div className="dropdown dropdown-bottom" onBlur={onBlur} ref={divRef}>
       <input tabIndex={0} 
         type="text"
         className="input input-bordered input-xs w-full max-w-xs"
@@ -72,6 +79,7 @@ export default function TickerDropdown({ onChange, onBlur, onTickerSelected }: T
             onClick={() => {
               handleFilterChange(t.ticker_name)
               handleTickerSelected(t.ticker_name)
+              divRef.current?.blur()
             }}>
               {t.ticker_name}
           </li>
