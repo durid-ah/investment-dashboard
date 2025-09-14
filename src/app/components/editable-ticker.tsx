@@ -6,34 +6,28 @@ import TickerDropdown from "./ticker-dropdown";
 
 type EditableTickerProps = {
     content: string,
-    onChange?: (value: string) => void
+    onTickerSelected?: (value: string) => void
 }
 
-export function EditableTicker({content, onChange} : EditableTickerProps) {
+export function EditableTicker({content, onTickerSelected} : EditableTickerProps) {
     const [isEditMode, setIsEditMode] = useState(false)
     const [field, setField] = useState(content)
 
     function onBlurHandler() {
         console.log('EditableTicker', `onBlurHandler`)
         setIsEditMode(false)
-        if (onChange) {
-            onChange(field)
-        }
+        onTickerSelected && onTickerSelected(field)
     }
 
     function onTickerSelectHandler(value: string) {
         console.log('EditableTicker', `onTickerSelectHandler`, value)
         setField(value)
-        onChange && onChange(value)
+        onTickerSelected && onTickerSelected(value)
     }
 
     function divClickedHandler() {
        setIsEditMode(true)
     }
-
-    // TODO: Add a function that handles the ticker selection
-    // TODO: Move the field update to the ticker selection function
-    // TODO: Maybe call onChange in the ticker selection function?
 
     return (
         <>

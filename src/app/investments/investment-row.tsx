@@ -48,7 +48,7 @@ export function InvestmentRow({investment}: InvestmentProp) {
         <div className="flex items-center gap-3">
           <EditableTicker 
             content={investment.ticker} 
-            onChange={(value) => updateTicker(value!.toString())}/>
+            onTickerSelected={(value) => updateTicker(value!.toString())}/>
         </div>
       </td>
       <td>

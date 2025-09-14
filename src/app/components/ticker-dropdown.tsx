@@ -8,7 +8,6 @@ type TickerDropDownProps = {
   onTickerSelected?: (ticker: string) => void
 }
 
-// TODO: Create an event that triggers when a ticker is selected
 export default function TickerDropdown({ initialValue, onBlur, onTickerSelected }: TickerDropDownProps) {
   const {data: tickers } = useGetTickersQuery()
   const mutation = useAddTickerMutation()
@@ -72,6 +71,7 @@ export default function TickerDropdown({ initialValue, onBlur, onTickerSelected 
             Add Ticker
           </li>
         }
+        {/* TODO: arrow buttons to select the ticker */}
         { filteredTickers.map(t => (
           <li className="btn btn-neutral btn-xs rounded-none"
             key={t.ticker_name}
