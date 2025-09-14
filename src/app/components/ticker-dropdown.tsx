@@ -12,8 +12,6 @@ export default function TickerDropdown({ initialValue, onBlur, onTickerSelected 
   const {data: tickers } = useGetTickersQuery()
   const mutation = useAddTickerMutation()
 
-  const divRef = useRef<HTMLDivElement>(null)
-
   const [selectedTicker, setSelectedTicker] = useState<string>(initialValue ?? '')
   const [filteredTickers, setFilteredTickers] = useState<Ticker[]>(filterTickers(tickers, selectedTicker))
 
@@ -51,11 +49,13 @@ export default function TickerDropdown({ initialValue, onBlur, onTickerSelected 
   
   async function addNewTicker(ticker:string) {
     mutation.mutate(ticker.toUpperCase())
-    // TODO: Should also set the new ticker to the internal ticker
+    setSelectedTicker(ticker.toUpperCase())
+    handleTickerSelected(ticker.toUpperCase())
+    onBlur?.()
   }
 
   return(
-    <div className="dropdown dropdown-bottom" onBlur={onBlur} ref={divRef}>
+    <div className="dropdown dropdown-bottom" onBlur={onBlur}>
       <input tabIndex={0} 
         type="text"
         className="input input-bordered input-xs w-full max-w-xs"
@@ -79,7 +79,7 @@ export default function TickerDropdown({ initialValue, onBlur, onTickerSelected 
             onClick={() => {
               handleFilterChange(t.ticker_name)
               handleTickerSelected(t.ticker_name)
-              divRef.current?.blur()
+              onBlur?.()
             }}>
               {t.ticker_name}
           </li>
