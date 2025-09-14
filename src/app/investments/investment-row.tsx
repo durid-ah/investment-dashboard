@@ -25,8 +25,8 @@ export function InvestmentRow({investment}: InvestmentProp) {
     })
   }
 
-  function updateTicker(ticker: string) {
-    mutation.mutate({...investment, ticker}, 
+  function updateInvestment(updatedInvestment: any) {
+    mutation.mutate({...investment, ...updatedInvestment}, 
       { 
         onSuccess: () => internalQueryClient.invalidateQueries({queryKey: ['investments', investment.account_id]}),
         onError: (err) => console.error(err)
@@ -44,11 +44,10 @@ export function InvestmentRow({investment}: InvestmentProp) {
         </label>
       </th>
       <td>
-        {/* TODO: Handle persistence */}
         <div className="flex items-center gap-3">
           <EditableTicker 
             content={investment.ticker} 
-            onTickerSelected={(value) => updateTicker(value!.toString())}/>
+            onTickerSelected={(value) => updateInvestment({ ticker: value!.toString()})}/>
         </div>
       </td>
       <td>
