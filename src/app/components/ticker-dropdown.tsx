@@ -25,7 +25,6 @@ export default function TickerDropdown({ initialValue, onBlur, onTickerSelected 
   }
 
   function handleFilterChange(ticker: string) {
-    console.log('TickerDropdown', `handleFilterChange`, ticker)
     const _ticker = ticker.toUpperCase()
     setFilteredTickers(filterTickers(tickers, ticker))
     setSelectedTicker(_ticker)
@@ -36,7 +35,6 @@ export default function TickerDropdown({ initialValue, onBlur, onTickerSelected 
   }
 
   function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
-    console.log('TickerDropdown', `handleKeyPress`, selectedTicker, e.code)
     if (e.code === 'Enter' || e.code === 'NumpadEnter') {
       handleTickerSelected(selectedTicker)
       e.currentTarget.blur()

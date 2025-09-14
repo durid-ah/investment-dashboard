@@ -14,13 +14,11 @@ export function EditableTicker({content, onTickerSelected} : EditableTickerProps
     const [field, setField] = useState(content)
 
     function onBlurHandler() {
-        console.log('EditableTicker', `onBlurHandler`)
         setIsEditMode(false)
         onTickerSelected && onTickerSelected(field)
     }
 
     function onTickerSelectHandler(value: string) {
-        console.log('EditableTicker', `onTickerSelectHandler`, value)
         setField(value)
         onTickerSelected && onTickerSelected(value)
     }
