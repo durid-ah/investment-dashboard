@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useAddTickerMutation, useGetTickersQuery } from "../hooks/ticker-hooks";
 import { Ticker } from "../backend-calls/ticker-calls";
 
