@@ -58,9 +58,8 @@ export function InvestmentRow({investment}: InvestmentProp) {
       </td>
       <td>
         <div className="flex items-center gap-3">
-          {/* TODO: Persistence is needed */}
           <EditableValue content={investment.shares} 
-            type="number" onChange={(value) => console.log(`Value`, value)}/>
+            type="number" onChange={(value) => updateInvestment({ shares: value })}/>
         </div>
       </td>
       <td>
