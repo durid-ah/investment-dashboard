@@ -3,6 +3,7 @@ import { EditableValue } from "../components/editable-text"
 import { Investment } from "../backend-calls/investment-calls"
 import { EditableTicker } from "../components/editable-ticker"
 import { useUpdateInvestmentMutation } from "../hooks/investment-hooks"
+import { EditableCategory } from "../components/editable-category"
 
 type InvestmentProp = {
   investment: Investment
@@ -51,9 +52,10 @@ export function InvestmentRow({investment}: InvestmentProp) {
         </div>
       </td>
       <td>
-        {/* TODO: We need an editable dropdown */}
-      <div className="flex items-center gap-3">
-          <div className="font-bold">{investment.category}</div>
+        <div className="flex items-center gap-3">
+          <EditableCategory 
+            content={investment.category} 
+            onCategorySelected={(value) => updateInvestment({ category: value!.toString()})}/>
         </div>
       </td>
       <td>

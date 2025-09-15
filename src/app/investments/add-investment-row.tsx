@@ -37,10 +37,10 @@ export function AddInvestmentRow({ accountId, cancelAddRow }: AddInvestmentRowPr
         <tr>
             <th></th>
             <td>
-                <TickerDropdown onChange={(ticker) => setInvestment(inv => ({...inv, ticker}))} />
+                <TickerDropdown onTickerSelected={(ticker) => setInvestment(inv => ({...inv, ticker}))} />
             </td>
             <td>
-                <CategoryDropdown onChange={(category) => setInvestment(inv => ({...inv, category}))} />
+                <CategoryDropdown onCategorySelected={(category) => setInvestment(inv => ({...inv, category}))} />
             </td>
             <td>
                 <input type="number" 

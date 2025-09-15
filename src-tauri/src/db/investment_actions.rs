@@ -8,6 +8,7 @@ use crate::db::utils::List;
 pub fn add_investment(mut new_investment: NewInvestment) -> Result<usize, String> {
     use crate::schema::investment;
 
+    println!("Adding investment: {:?}", new_investment);
     new_investment.ticker = new_investment.ticker.to_lowercase();
 
     let conn = &mut establish_connection();
@@ -15,7 +16,10 @@ pub fn add_investment(mut new_investment: NewInvestment) -> Result<usize, String
     diesel::insert_into(investment::table)
         .values(&new_investment)
         .execute(conn)
-        .map_err(|err| err.to_string())
+        .map_err(|err| {
+            println!("Error adding investment: {}", err);
+            err.to_string()
+        })
 }
 
 #[tauri::command]
@@ -23,6 +27,7 @@ pub fn update_investment(investment_update: Investment) -> Result<usize, String>
     use crate::schema::investment::dsl::*;
     let conn = &mut establish_connection();
 
+    println!("Updating investment: {:?}", investment_update);
     let _ticker = investment_update.ticker.to_lowercase();
 
     diesel::update(investment.find(investment_update.id))
