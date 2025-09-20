@@ -32,7 +32,9 @@ export function EditableValue({content, type, onChange} : EditableValueProps) {
     return (
         <>
             <input autoFocus type={type} 
-                ref={input => input?.focus()}
+                ref={input => {
+                    input?.focus();
+                }}
                 className="w-48"
                 hidden={!isEditMode} value={field}
                 onChange={(e) => onChangeHandler(e.target.value)} 
@@ -42,5 +44,5 @@ export function EditableValue({content, type, onChange} : EditableValueProps) {
                 {field}
             </div>
         </>
-    )
+    );
 }
