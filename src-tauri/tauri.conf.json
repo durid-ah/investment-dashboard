@@ -53,6 +53,7 @@
         "resizable": true,
         "title": "investment-dashboard",
         "width": 800,
+        "minWidth": 1000,
         "useHttpsScheme": true
       }
     ],
