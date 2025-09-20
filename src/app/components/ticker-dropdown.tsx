@@ -18,7 +18,7 @@ export default function TickerDropdown({ initialValue, onBlur, onTickerSelected 
   function filterTickers(tickers: Ticker[], targetTicker: string) {
     if (targetTicker) {
       const lowerTargetTicker = targetTicker.toLowerCase()
-      return tickers.filter(t => t.ticker_name.toLowerCase().includes(lowerTargetTicker))    
+      return tickers.filter(t => t.ticker_name.toLowerCase().includes(lowerTargetTicker))
     }
     else
       return tickers
@@ -44,7 +44,7 @@ export default function TickerDropdown({ initialValue, onBlur, onTickerSelected 
       e.currentTarget.blur()
     }
   }
-  
+
   async function addNewTicker(ticker:string) {
     mutation.mutate(ticker.toUpperCase())
     setSelectedTicker(ticker.toUpperCase())
@@ -54,7 +54,7 @@ export default function TickerDropdown({ initialValue, onBlur, onTickerSelected 
 
   return(
     <div className="dropdown dropdown-bottom" onBlur={onBlur}>
-      <input tabIndex={0} 
+      <input tabIndex={0}
         type="text"
         className="input input-bordered input-xs w-full max-w-xs"
         value={selectedTicker}
@@ -62,7 +62,7 @@ export default function TickerDropdown({ initialValue, onBlur, onTickerSelected 
         onChange={e => handleFilterChange(e.target.value)}/>
       <ul tabIndex={0}
         className="dropdown-content menu neutral rounded-md z-[1] w-32 shadow overflow-hidden p-0">
-        { selectedTicker && !tickers.find(t => t.ticker_name === selectedTicker) && 
+        { selectedTicker && !tickers.find(t => t.ticker_name === selectedTicker) &&
           <li className="btn btn-neutral btn-xs rounded-none"
             onMouseDown={(e) => e.preventDefault()}
             onClick={() => addNewTicker(selectedTicker)}>
@@ -81,7 +81,7 @@ export default function TickerDropdown({ initialValue, onBlur, onTickerSelected 
             }}>
               {t.ticker_name}
           </li>
-          )) 
+          ))
         }
       </ul>
     </div>
